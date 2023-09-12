@@ -54,6 +54,12 @@
       #shayari {
         font-size: 18px;
       }
+      @media screen and (max-width: 680px) {
+        .container {
+          width: 100%;
+          margin-top: 80%;
+        }
+      }
     </style>
   </head>
   <body>
@@ -78,19 +84,21 @@
       }
 
       try {
-        const response = await fetch("http://localhost:3000/generate-shayari", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ keyword }),
-        });
+        const response = await fetch(
+          "https://shayari-app-vyfj.onrender.com/generate-shayari",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ keyword }),
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
           const shayari = data.shayari;
 
-          // Display the Shayari
           document.getElementById("shayari").textContent = shayari;
         } else {
           alert("Failed to generate Shayari. Please try again later.");
