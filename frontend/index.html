@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shayari App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #6bfcf7;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        text-align: center;
+        padding: 50px;
+        background-color: white;
+        width: 40%;
+        margin: auto;
+        margin-top: 12%;
+        border-radius: 10px;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      .input-container {
+        margin-top: 20px;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+      }
+
+      button {
+        padding: 10px 20px;
+
+        color: black;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+        background-color: #3ee3de;
+      }
+
+      .shayari-container {
+        margin-top: 20px;
+      }
+
+      #shayari {
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Generate Shayari</h1>
+      <div class="input-container">
+        <input type="text" id="keyword" placeholder="Enter a keyword" />
+        <button onclick="generateShayari()">Generate</button>
+      </div>
+      <div class="shayari-container">
+        <p id="shayari"></p>
+      </div>
+    </div>
+  </body>
+  <script>
+    async function generateShayari() {
+      const keyword = document.getElementById("keyword").value;
+
+      if (!keyword) {
+        alert("Please enter a keyword.");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3000/generate-shayari", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ keyword }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const shayari = data.shayari;
+
+          // Display the Shayari
+          document.getElementById("shayari").textContent = shayari;
+        } else {
+          alert("Failed to generate Shayari. Please try again later.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again later.");
+      }
+    }
+  </script>
+</html>
