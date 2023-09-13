@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shayari App</title>
+    <!-- Include the SweetAlert CSS and JavaScript files -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -56,15 +59,18 @@
       }
       @media screen and (max-width: 680px) {
         .container {
-          width: 100%;
-          margin-top: 80%;
+          width: 60%;
+          margin-top: 50%;
+        }
+        button {
+          margin-top: 20px;
         }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Generate Shayari</h1>
+      <h1>Generate Shayari 📝</h1>
       <div class="input-container">
         <input type="text" id="keyword" placeholder="Enter a keyword" />
         <button onclick="generateShayari()">Generate</button>
@@ -75,25 +81,29 @@
     </div>
   </body>
   <script>
+    let URLlink = "https://shayari-app-vyfj.onrender.com/";
+    // let URLlink = "http://localhost:3000/";
     async function generateShayari() {
       const keyword = document.getElementById("keyword").value;
 
       if (!keyword) {
-        alert("Please enter a keyword.");
+        // alert("Please enter a keyword.");
+        Swal.fire({
+          icon: "error",
+          title: "Input Field cannot be empty",
+          text: "Please enter a keyword.",
+        });
         return;
       }
 
       try {
-        const response = await fetch(
-          "https://shayari-app-vyfj.onrender.com/generate-shayari",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ keyword }),
-          }
-        );
+        const response = await fetch(`${URLlink}generate-shayari`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ keyword }),
+        });
 
         if (response.ok) {
           const data = await response.json();
@@ -101,7 +111,12 @@
 
           document.getElementById("shayari").textContent = shayari;
         } else {
-          alert("Failed to generate Shayari. Please try again later.");
+          // alert("Failed to generate Shayari. Please try again later.");
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "failed to generate shayri.Please try again later",
+          });
         }
       } catch (error) {
         console.error("Error:", error);
